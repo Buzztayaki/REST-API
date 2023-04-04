@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  api:
+    image: Dockerfile
+  
+  database:
+    image: postgres
+    volumes:
+
+
+volumes:
+
+networks:
