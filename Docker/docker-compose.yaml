@@ -2,13 +2,32 @@ version: '3'
 
 services:
   api:
-    image: Dockerfile
+    build:
+      context: .
+      image: PythonFlask_API
+    networks:
+      - API-net
   
-  database:
-    image: postgres
+  postgres:
+    image: postgres:15.2-bullseye
+    environment:
+      - POSTGRES_USER=carlos
+      - POSTGRES_PASSWORD=
     volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - API-net
+
+  #nginxProxyManager:
 
 
 volumes:
+  postgres-data:
 
 networks:
+  API-net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        -subnet: "192.168.0.0/24"
