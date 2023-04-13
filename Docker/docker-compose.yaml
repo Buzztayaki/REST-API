@@ -7,22 +7,26 @@ services:
       image: PythonFlask_API
     networks:
       - API-net
+    ports:
+      - 5000:5000 # Quitar cuando la aplicación esté trabajando en el proxy inverso
   
-  postgres:
-    image: postgres:15.2-bullseye
+  mongodb:
+    image: mongo:latest
     environment:
-      - POSTGRES_USER=carlos
-      - POSTGRES_PASSWORD=
+      MONGO_INITDB_ROOT_USERNAME: carlos
+      MONGO_INITDB_ROOT_PASSWORD: example # Se tiene que cambiar
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - mongo-data:/data/db
     networks:
       - API-net
 
-  #nginxProxyManager:
+  # nginxProxyManager:
+  #   ports:
+  #     - 443:443
 
 
 volumes:
-  postgres-data:
+  mongo-data:
 
 networks:
   API-net:
