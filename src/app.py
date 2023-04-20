@@ -1,13 +1,17 @@
-import os
-from flask import Flask
+from flask import Flask, jsonify
 from flask_pymongo import PyMongo
-from database import db
+from bson.json_util import dumps
+
 
 
 app = Flask(__name__)
+app.config.from_prefixed_env()
+app.config['MONGO_URI']
+mongo = PyMongo(app)
 
-db.connection()
+
 
 @app.get('/')
 def home ():
-    return "Hello World"
+    vgames = mongo.db.games.find()
+    
