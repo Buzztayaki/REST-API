@@ -1,0 +1,1 @@
+docker run -dit --name detached_MongoDB -p27017:27017 -e MONGO_INITDB_ROOT_USERNAME=carlos -e MONGO_INITDB_ROOT_PASSWORD=carlos mongo:latest
