@@ -1,29 +1,36 @@
 version: '3'
 
 services:
-  api:
+  pythonAPI:
     build:
       context: .
       image: PythonFlask_API
     networks:
-      - API-net
+      API-net:
+      ipv4_address: 192.168.10.10
     ports:
-      - 5000:5000 # Quitar cuando la aplicación esté trabajando en el proxy inverso
+      - 5000:5000 # Quitar Cuando este funcionando a traves de Cloudflare Tunnel Puerto expuesto en la imagen
+    restart: unless-stopped
+    container_name: pythonAPI
+    hostname: pythonAPI
+    domainname: pythonAPI
   
-  mongodb:
+  mongoServer:
     image: mongo:latest
     environment:
       MONGO_INITDB_ROOT_USERNAME: carlos
-      MONGO_INITDB_ROOT_PASSWORD: example # Se tiene que cambiar
+      MONGO_INITDB_ROOT_PASSWORD: example # Se tiene que cambiar. Nosé si dejarlo Hardcodeado
     volumes:
       - mongo-data:/data/db
     networks:
-      - API-net
-
-  # nginxProxyManager:
-  #   ports:
-  #     - 443:443
-
+      API-net:
+        ipv4_address: 192.168.10.20
+    expose:
+      - "27017"
+    container_name: mongoServer
+    hostname: mongoServer
+    domainname: mongoServer
+  # Añadir CloudFlare Tunnel
 
 volumes:
   mongo-data:
@@ -34,4 +41,4 @@ networks:
     ipam:
       driver: default
       config:
-        -subnet: "192.168.0.0/24"
+        -subnet: "192.168.10.0/24"

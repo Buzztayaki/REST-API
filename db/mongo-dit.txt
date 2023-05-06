@@ -1,1 +1,9 @@
-docker run -dit --name detached_MongoDB -p27017:27017 -e MONGO_INITDB_ROOT_USERNAME=carlos -e MONGO_INITDB_ROOT_PASSWORD=carlos mongo:latest
+docker run -dit -h mongoServer --domainname mongoServer --name mongoServer -p27017:27017 -e MONGO_INITDB_ROOT_USERNAME=carlos -e MONGO_INITDB_ROOT_PASSWORD=carlos mongo:latest
+
+docker exec -it <Container ID> mongosh 'mongodb://carlos:carlos@localhost:27017?authsource=admin'
+
+mongoimport --uri 'mongodb://carlos:carlos@localhost:27017/futbol?authSource=admin' --collection matches --drop --type csv --headerline false  --columnsHaveTypes --fieldFile=fields.txt --ignoreFields id,HTHG,HTAG,HTR --file player_stats.csv
+
+Database: kaggle datasets download -d datasciencegonewild/euro-football-data-since-2012 ------------> Eruropean Football
+
+python3 pruebascript.py > /dev/null
