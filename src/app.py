@@ -25,9 +25,6 @@ class OneMatch(Resource):
         data = dumps(mongo.db.matches.find_one_or_404({'_id': "ObjectId({})".format(id)}))
         return Response(data, mimetype='aplication/json')
 
-
-
-
 #mongo.db.games.find()
 
 #app.add_url_rule()
