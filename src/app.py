@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, Response
 from flask_pymongo import PyMongo
 from flask_restx import Api, Resource
 from bson.json_util import dumps
@@ -12,14 +12,23 @@ api = Api(app)
 mongo = PyMongo(app)
 
 
-
-
-@api.route('/inicio')
-class Season(Resource):
+@api.route('/matches')
+class AllMatches(Resource):
     def get(self):
-        # data = mongo.db.football.find({'Country': 'Spain'})
-        # print(data)
-        return {"hola": "hola"}
+        data = dumps(mongo.db.matches.find())
+        return Response(data, mimetype='aplication/json')
+    def post(self):
+        pass
+
+@api.route('/matches/<string:id>')
+class OneMatch(Resource):
+    def get(self, id):
+        data = dumps(mongo.db.matches.find_one_or_404({'_id': "ObjectId({})".format(id)}))
+        return Response(data, mimetype='aplication/json')
+    def put(self, id):
+        pass
+    def delete(self, id):
+        pass
 
 #mongo.db.games.find()
 
