@@ -1,5 +1,4 @@
 from flask import Flask, jsonify
-import db
 from flask_pymongo import PyMongo
 from flask_restx import Api, Resource
 from bson.json_util import dumps
