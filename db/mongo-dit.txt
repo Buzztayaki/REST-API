@@ -12,3 +12,15 @@ Database: kaggle datasets download -d datasciencegonewild/euro-football-data-sin
 python3 pruebascript.py > /dev/null
 
 shortuuid
+
+collections: matches, classification, calendar, predictions
+
+/matches/calendar/
+
+/matches/results/(<Season>)/(<league>)/[today-or-alltime]
+
+/classification/<league>/
+
+/predictions
+
+/login

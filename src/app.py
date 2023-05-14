@@ -30,6 +30,13 @@ class OneMatch(Resource):
     def delete(self, id):
         pass
 
+@api.route('/predictions')
+class Predictions(Resource):
+    def get(self):
+        pass
+    def post(self):
+        pass
+
 #mongo.db.games.find()
 
 #app.add_url_rule()
