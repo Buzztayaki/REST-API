@@ -15,12 +15,4 @@ shortuuid
 
 collections: matches, classification, calendar, predictions
 
-/matches/calendar/
 
-/matches/results/(<Season>)/(<league>)/[today-or-alltime]
-
-/classification/<league>/
-
-/predictions
-
-/login

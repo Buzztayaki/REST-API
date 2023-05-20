@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, Response, request
-from flask_pymongo import PyMongo
-from flask_restx import Api, Resource, fields
-from bson.json_util import dumps
+from .databasequerys import mongo, matches, teamatches, classification
+from flask_restx import Api, Resource
+from src.databasequerys import matches
 
 
 app = Flask(__name__)
@@ -9,62 +9,35 @@ app.config.from_prefixed_env()
 app.config['MONGO_URI']
 
 api = Api(app)
-mongo = PyMongo(app)
+mongo.init_app(app)
 
-
-@api.route('/movies')
-class Movies(Resource):
-    def get(self):
-        data = dumps(mongo.db.movies.find())
-        return Response(data, mimetype='aplication/json')
-    def post(self):
-        new_movie = request.get_json()
-        mongo.db.movies.insert_one(new_movie)
-        data = dumps(mongo.db.movies.find({'title': new_movie["title"]}))
-        return Response(data, status=201, mimetype='aplication/json')
-
-@api.route('/movies/<string:title>')
-class OneMovie(Resource):
-    def get(self, title):
-        data = dumps(mongo.db.movies.find_one_or_404({"title": title}))
-        return Response(data, mimetype='aplication/json')
-            
-
-
-
-
-
-
-
-
-
-# prediction_model = api.model('Data', {
-#     'username': fields.String(required=True, description='Name of the data'),
-#     'HomeTeam': fields.String(required=True, description='Value of the data'),
-#     'AwayTeam': fields.String(required=True, description='Value of the data'),
-#     'HomeTeamGoals': fields.Integer(required=True, description='Value of the data'),
-#     'AwayTeamGoals': fields.Integer(required=True, description='Value of the data')
-# })
 
 @api.route('/matches')
 class AllMatches(Resource):
     def get(self):
-        data = dumps(mongo.db.matches.find())
+        if len(request.args) == 0 or len(request.args) > 2:
+            return Response({"Query Params needed!"}, status=400, mimetype='application/json')
+        else:
+            league = request.args.get("league")
+            season = request.args.get("season")
+            data = matches(league, season)
+            return Response(data, mimetype='aplication/json')
+
+@api.route('/matches/<string:team>')
+class TeamMatches(Resource):
+    def get(self, team):
+        data = teamatches(team)
         return Response(data, mimetype='aplication/json')
 
-@api.route('/matches/<string:id>')
-class OneMatch(Resource):
-    def get(self, id):
-        data = dumps(mongo.db.matches.find_one_or_404({'HomeTeam': id}))
+@api.route('/classification/<string:league>')
+class Clasification(Resource):
+    def get(self, league):
+        data = classification(league)
         return Response(data, mimetype='aplication/json')
-    def put(self, id):
-        pass
-    def delete(self, id):
-        pass
-
-@api.route('/predictions')
-class Predictions(Resource):
+    
+@api.route('/queryParamsTest')
+class QueryParams(Resource):
     def get(self):
-        pass
-    def post(self):
-        pass
+        league = request.args.get("league")
+        season = request.args.get("season")
+        return {"league": league, "season": season}
