@@ -2,10 +2,10 @@ docker run -dit -h mongoServer --domainname mongoServer --name mongoServer -p270
 
 docker exec -it <Container ID> mongosh 'mongodb://carlos:carlos@localhost:27017?authsource=admin'
 
-sed -i '1d' matchesdata2022-2023.csv
-cut -d ',' -f 2- matchesdata2022-2023.csv > matchesdata2022-2023.csv
+sed -i '1d' matchesdata2021-2023.csv
+cut -d ',' -f 2- matchesdata2021-2023.csv > matchesdata.csv
 
-mongoimport --uri 'mongodb://carlos:carlos@localhost:27017/football?authSource=admin' --collection matches --drop --type csv --ignoreBlanks --columnsHaveTypes --fieldFile=fields.txt --file matchesdata2022-2023.csv
+mongoimport --uri 'mongodb://carlos:carlos@localhost:27017/football?authSource=admin' --collection matches --drop --type csv --ignoreBlanks --columnsHaveTypes --fieldFile=fields.txt --file matchesdata.csv
 
 Database: kaggle datasets download -d datasciencegonewild/euro-football-data-since-2012 ------------> Eruropean Football
 
@@ -15,4 +15,11 @@ shortuuid
 
 collections: matches, classification, calendar, predictions
 
+db.createUser(
+{
+user: "nombre:_del_usuario",
+pwd: "contraseña",
+roles: [ "read", "dbAdmin" ]
+}
+);
 

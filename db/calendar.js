@@ -1,19 +1,5 @@
 db.matches.aggregate(
     [
-        {$match: { LeagueID: "SP1" } },
-        {$group: { 
-            _id: {
-                local: "$HomeTeam",
-                visitante: "$AwayTeam"
-            },
-            partidos_jugados: { $sum: 1 }    
-            }
-        }
-    ] 
-)
-
-db.matches.aggregate(
-    [
         {$match: {LeagueID: "SP1"},},
         {$project: {
             _id: 0,
@@ -83,3 +69,29 @@ db.matches.aggregate(
           }
     ] 
 )
+
+db.matches.aggregate(
+  [
+    {"$match": {Season: "2021-2022"} },
+    {"$group": {
+        "_id": {"League": "$League", "Season": "$Season"},
+        "RedCards": { "$sum": { "$add": ["$HomeTeamRedCards", "$AwayTeamRedCards"] } }
+      }
+    },
+    {"$project": {
+        "_id": 0,
+        "League": "$_id.League",
+        "Season": "$_id.Season",
+        "RedCards": "$RedCards"
+      }
+    },
+    {"$sort": {RedCards: -1}}
+  ]
+)
+
+db.matches.aggregate([
+  {"$match": {"HomeTeam": "Sevilla", "Season": "2021-2022"}},
+  {"$unionWith": {"coll": "matches", "pipeline": [{"$match": {"AwayTeam": "Betis", "Season": "2022-2023"}}]}},
+  {"$addFields": { "Date": { "$dateFromString": { "dateString": "$Date", "format": "%d/%m/%Y"}}}},
+  {"$sort": {"Date": -1}}
+])

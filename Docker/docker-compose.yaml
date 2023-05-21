@@ -3,7 +3,7 @@ version: '3'
 services:
   pythonAPI:
     build:
-      context: .
+      context: ./api/Dockerfile
       image: PythonFlask_API
     networks:
       API-net:

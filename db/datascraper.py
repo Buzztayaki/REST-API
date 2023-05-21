@@ -7,12 +7,11 @@ from tqdm.auto import tqdm
 
 #Codes and names for ALL LEAGUES
 leagues = {
-        'E0':['England', 'Premier League'],
-        'SP1':['Spain', 'Primera Division'],
-        'I1':['Italy', 'Serie A'],
-        'D1':['Germany', 'Bundesliga 1'],
-        'F1':['France', 'Le Championnat'],
-        'N1':['Netherlands','Eredivisie']}
+        'E0':['England', 'Premier_League'],
+        'SP1':['Spain', 'LaLiga'],
+        'I1':['Italy', 'Serie_A'],
+        'D1':['Germany', 'Bundesliga'],
+        'F1':['France', 'Ligue_1']}
 
 #Explanation:
 """
@@ -26,7 +25,7 @@ E0 is English Premier league, SP1 is Spanish La Liga, etc."""
 
 #generating a list of lists for ALL desired season
 
-start = 2022                   #starting year
+start = 20201                  #starting year
 now = dt.date.today().year     #current year
 ly = int(str(start)[2:])       #equals to the last 2 digits of start year
 years = []                     #will be populated with lists like the example
@@ -40,10 +39,10 @@ for x in range(1, now-start+1):
 #list of target columns and list of main columns
 #check metadata for more info 
 
-wanted = ['Div', 'Date', 'HomeTeam', 'AwayTeam', 'Referee',
+wanted = ['Div', 'Date', 'HomeTeam', 'AwayTeam', 'borrar0',
           'FTHG', 'FTAG', 'FTR', 'borrar1', 'borrar2', 'borrar3', 'HS', 'AS', 'HST', 'AST', 'HF', 'AF', 'HC', 'AC', 'HY', 'AY', 'HR', 'AR']
 
-base_attributes = ['id', 'Country', 'League', 'Div', 'Season', 'Date', 'HomeTeam', 'AwayTeam', 'Referee',
+base_attributes = ['id', 'Country', 'League', 'Div', 'Season', 'Date', 'HomeTeam', 'AwayTeam', 'borrar0',
                    'FTHG', 'FTAG', 'FTR', 'borrar1', 'borrar2', 'borrar3', 'HS', 'AS', 'HST', 'AST', 'HF', 'AF', 'HC', 'AC', 'HY', 'AY', 'HR', 'AR']
 
 # older_attributes = ['Div', 'Date', 'HomeTeam', 'AwayTeam', 

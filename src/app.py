@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, Response, request
-from .databasequerys import mongo, matches, teamatches, classification
+from .databasequerys import mongo, matches, teamatches, classification, season_redCards
 from flask_restx import Api, Resource
 from src.databasequerys import matches
 
@@ -26,7 +26,8 @@ class AllMatches(Resource):
 @api.route('/matches/<string:team>')
 class TeamMatches(Resource):
     def get(self, team):
-        data = teamatches(team)
+        season = request.args.get("season")
+        data = teamatches(team, season)
         return Response(data, mimetype='aplication/json')
 
 @api.route('/classification/<string:league>')
@@ -35,9 +36,8 @@ class Clasification(Resource):
         data = classification(league)
         return Response(data, mimetype='aplication/json')
     
-@api.route('/queryParamsTest')
-class QueryParams(Resource):
-    def get(self):
-        league = request.args.get("league")
-        season = request.args.get("season")
-        return {"league": league, "season": season}
+@api.route('/leaguestats/redcards/<string:season>')
+class RedCards(Resource):
+    def get(self, season):
+        data = season_redCards(season)
+        return Response(data, mimetype='aplication/json')
