@@ -16,17 +16,17 @@ services:
     domainname: pythonAPI
   
   mongoServer:
-    image: mongo:latest
+    build:
+      context: ./mongodb/Dockerfile
+      image: MongoDB_Python_Cron
     environment:
       MONGO_INITDB_ROOT_USERNAME: carlos
-      MONGO_INITDB_ROOT_PASSWORD: example # Se tiene que cambiar. Nosé si dejarlo Hardcodeado
+      MONGO_INITDB_ROOT_PASSWORD: carlos
     volumes:
       - mongo-data:/data/db
     networks:
       API-net:
         ipv4_address: 192.168.10.20
-    expose:
-      - "27017"
     container_name: mongoServer
     hostname: mongoServer
     domainname: mongoServer

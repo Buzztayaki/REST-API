@@ -4,7 +4,7 @@ data="/home/carlos/matchesdata2022-2023.csv"
 PyScript="/home/carlos/datascrambler.py"
 logFile="/home/carlos/mongoimports.log"
 date=$(date +"%Y/%m/%d %H:%M:%S")
-mongoimport= $(mongoimport --uri 'mongodb://carlos:carlos@localhost:27017/futbol?authSource=admin' --collection matches --drop --type csv --columnsHaveTypes --fieldFile=/home/carlos/fields.txt --file "$data")
+mongoimport= $(mongoimport --uri 'mongodb://carlos:carlos@localhost:27017/football?authSource=admin' --collection matches --drop --type csv --columnsHaveTypes --fieldFile=/home/db/fields.txt --file "$data")
 
 echo "[$date] Comienza el update de la base de datos" >> $logFile
 
