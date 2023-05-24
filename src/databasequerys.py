@@ -7,7 +7,12 @@ mongo = PyMongo()
 
 def matches(League=None, Season=None):
     if League is None and Season is None:
-        return {"error": "Bad Request", "message": "No valid arguments"}
+        pipeline = [
+            {"$addFields": { "Date": { "$dateFromString": { "dateString": "$Date", "format": "%d/%m/%Y" } } } }, 
+            {"$sort": { "Date": -1 } }, 
+            {"$limit": 10}
+        ]
+        return dumps(mongo.db.matches.aggregate(pipeline))
     elif League is None:
         return dumps(mongo.db.matches.find({"Season": Season}))
     elif Season is None:
@@ -33,10 +38,9 @@ def teamatches(Team, Season=None):
         ]
         return dumps(mongo.db.matches.aggregate(pipeline))
 
-
-def classification(League):
+def classification(League, Season):
     pipeline = [
-        {"$match": {"League": League}},
+        {"$match": {"League": League, "Season": Season}},
         {"$project": {"_id": 0, "League": 1, "HomeTeam": 1, "AwayTeam": 1, "HomeTeamGoals": 1, "AwayTeamGoals": 1, "Result": 1}},
         {"$group": {"_id": "$HomeTeam", "MatchesPlayed": { "$sum": 1 }, "Wins": { "$sum": { "$cond": [ { "$eq": ["$Result", "H"] }, 1, 0]}}, "Draws": { "$sum": { "$cond": [ { "$eq": ["$Result", "D"] }, 1, 0 ]}}, "Losses": { "$sum": { "$cond": [ { "$eq": ["$Result", "A"] }, 1, 0 ] } }, "GoalsFor": { "$sum": "$HomeTeamGoals" }, "GoalsAgainst": { "$sum": "$AwayTeamGoals" } } },
         {"$project": {"Team": "$_id.Team", "MatchesPlayed": 1, "Wins": 1, "Draws": 1, "Losses": 1, "GoalsFor": 1, "GoalsAgainst": 1, "GoalDifference": { "$subtract": ["$GoalsFor", "$GoalsAgainst"] }, "Points": { "$sum": [ { "$multiply": ["$Wins", 3] }, "$Draws" ] }}},

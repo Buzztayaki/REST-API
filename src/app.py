@@ -15,9 +15,6 @@ mongo.init_app(app)
 @api.route('/matches')
 class AllMatches(Resource):
     def get(self):
-        if len(request.args) == 0 or len(request.args) > 2:
-            return Response({"Query Params needed!"}, status=400, mimetype='application/json')
-        else:
             league = request.args.get("league")
             season = request.args.get("season")
             data = matches(league, season)
@@ -33,8 +30,9 @@ class TeamMatches(Resource):
 @api.route('/classification/<string:league>')
 class Clasification(Resource):
     def get(self, league):
-        data = classification(league)
-        return Response(data, mimetype='aplication/json')
+            season = request.args.get("season")
+            data = classification(league, season)
+            return Response(data, mimetype='aplication/json')
     
 @api.route('/leaguestats/redcards/<string:season>')
 class RedCards(Resource):
