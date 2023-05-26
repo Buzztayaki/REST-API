@@ -2,11 +2,13 @@ from flask import Flask, jsonify, Response, request
 from .databasequerys import mongo, matches, teamatches, classification, season_redCards
 from flask_restx import Api, Resource
 from src.databasequerys import matches
+from flask_cors import CORS
 
 
 app = Flask(__name__)
 app.config.from_prefixed_env()
 app.config['MONGO_URI']
+CORS(app)
 
 api = Api(app)
 mongo.init_app(app)
