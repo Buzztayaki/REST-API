@@ -64,7 +64,7 @@ def season_redCards(Season):
 
 def season_accuracy(Season):
     pipeline = [
-        {"$match": {"Season": "2021-2022"} },
+        {"$match": {"Season": Season} },
         {"$group": {"_id": "$League","totalShots": { "$sum": "$HomeTeamShots" }, "totalShotsTarget": { "$sum": "$HomeTeamShotsTarget" }}},
         {"$project": {"_id": 0, "League": "$_id", "Accuracy": { "$multiply": [ { "$divide": [ "$totalShotsTarget", "$totalShots" ] }, 100 ] }}},
         {"$project": {"League": 1, "Accuracy": { "$round": ["$Accuracy", 2] }}},

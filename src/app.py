@@ -46,7 +46,7 @@ class RedCards(Resource):
         data = season_redCards(season)
         return Response(data, mimetype='aplication/json')
 
-@api.route('/leaguestats/redcards/<string:season>')
+@api.route('/leaguestats/accuracy/<string:season>')
 class Accuracy(Resource):
     def get(self, season):
         data = season_accuracy(season)
