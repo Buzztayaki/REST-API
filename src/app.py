@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, Response, request
-from .databasequerys import mongo, matches, teamatches, classification, season_redCards
+from .databasequerys import mongo, matches, teamatches, classification, season_redCards, season_accuracy
 from flask_restx import Api, Resource
 from src.databasequerys import matches
 from flask_cors import CORS
@@ -13,6 +13,10 @@ CORS(app)
 api = Api(app)
 mongo.init_app(app)
 
+@api.route('/welcome')
+class Home(Resource):
+    def get(self):
+        return {"message": "Welcome to my football API", "action": "Querie a defined endpoint"}
 
 @api.route('/matches')
 class AllMatches(Resource):
@@ -40,4 +44,10 @@ class Clasification(Resource):
 class RedCards(Resource):
     def get(self, season):
         data = season_redCards(season)
+        return Response(data, mimetype='aplication/json')
+
+@api.route('/leaguestats/redcards/<string:season>')
+class Accuracy(Resource):
+    def get(self, season):
+        data = season_accuracy(season)
         return Response(data, mimetype='aplication/json')

@@ -27,10 +27,31 @@ services:
     networks:
       API-net:
         ipv4_address: 192.168.10.20
+    restart: unless-stopped
     container_name: mongoServer
     hostname: mongoServer
     domainname: mongoServer
-  # Añadir CloudFlare Tunnel
+
+  apacheServer:
+    image: php:apache-bullseye
+    expose:
+      - 80
+      - 443
+    restart: unless-stopped
+    networks:
+      API-net:
+        ipv4_address: 192.168.10.30
+    container_name: apacheServer
+    hostname: apacheServer
+    domainname: apacheServer
+  
+  cloudflaretunnel:
+    image: cloudflare/cloudflare:latest
+    restart: unless-stopped
+    networks:
+      API-net:
+        ipv4_address: 192.168.10.40
+    command: tunnel run --token <MY_TOKEN>
 
 volumes:
   mongo-data:
