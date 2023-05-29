@@ -25,7 +25,7 @@ E0 is English Premier league, SP1 is Spanish La Liga, etc."""
 
 #generating a list of lists for ALL desired season
 
-start = 20201                  #starting year
+start = 2021                  #starting year
 now = dt.date.today().year     #current year
 ly = int(str(start)[2:])       #equals to the last 2 digits of start year
 years = []                     #will be populated with lists like the example
