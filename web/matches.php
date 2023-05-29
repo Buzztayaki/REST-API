@@ -80,7 +80,7 @@
                         }
                     }
                     if (empty($_POST)) {
-                        $api_url = "http://localhost:5000/matches";
+                        $api_url = "http://192.168.10.10:5000/matches";
                         $matches = call_api($api_url);
 
                         fill_table($matches);
@@ -89,25 +89,25 @@
                         $league = $_POST['League'];
                         $season = $_POST['Season'];
                         if ($_POST['League'] == "null" and $_POST['Season'] == "null"){
-                            $api_url = "http://localhost:5000/matches";
+                            $api_url = "http://192.168.10.10:5000/matches";
                             $matches = call_api($api_url);
 
                             fill_table($matches);
                         }
                         elseif ($_POST['League'] != "null" and $_POST['Season'] == "null"){
-                            $api_url = "http://localhost:5000/matches?league=$league";
+                            $api_url = "http://192.168.10.10:5000/matches?league=$league";
                             $matches = call_api($api_url);
 
                             fill_table($matches);
                         }
                         elseif ($_POST['League'] == "null" and $_POST['Season'] != "null"){
-                            $api_url = "http://localhost:5000/matches?season=$season";
+                            $api_url = "http://192.168.10.10:5000/matches?season=$season";
                             $matches = call_api($api_url);
 
                             fill_table($matches);
                         }
                         else {
-                            $api_url = "http://localhost:5000/matches?league=$league&season=$season";
+                            $api_url = "http://192.168.10.10:5000/matches?league=$league&season=$season";
                             $matches = call_api($api_url);
 
                             fill_table($matches);
@@ -115,7 +115,7 @@
                     }
                     elseif (isset($_POST['find'])) {
                         $team = $_POST['equipo'];
-                        $api_url = "http://localhost:5000/matches/$team";
+                        $api_url = "http://192.168.10.10:5000/matches/$team";
                         $matches = call_api($api_url);
 
                         fill_table($matches);

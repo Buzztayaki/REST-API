@@ -53,7 +53,7 @@
                         $season = $_POST['Season'];
                     }
                     // Obtener los datos de la API
-                    $api_url = "http://localhost:5000/classification/$league?season=$season";
+                    $api_url = "http://192.168.10.10:5000/classification/$league?season=$season";
                     $json_data = file_get_contents($api_url);
                     $equipos = json_decode($json_data);
 
