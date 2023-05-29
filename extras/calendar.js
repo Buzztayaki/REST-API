@@ -117,3 +117,10 @@ db.matches.aggregate([
   {"$project": {"League": 1, "Accuracy": { "$round": ["$Accuracy", 2] }}},
   {"$sort": {"Accuracy": -1}}
 ])
+
+db.matches.aggregate([
+  { "$addFields": { "Date": { "$dateFromString": { "dateString": "$Date", "format": "%d/%m/%Y" } } } },
+  { "$sort": { "Date": -1 } },
+  { "$limit": 10 },
+  { "$project": { "_id": 0, "Country": 1, "League": 1, "Season": 1, "Date": { "$dateToString": { "date": "$Date", "format": "%d/%m/%Y" } }, "HomeTeam": 1, "AwayTeam": 1, "HomeTeamGoals": 1, "AwayTeamGoals": 1, "Result": 1}}
+])

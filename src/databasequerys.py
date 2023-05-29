@@ -10,7 +10,8 @@ def matches(League=None, Season=None):
         pipeline = [
             {"$addFields": { "Date": { "$dateFromString": { "dateString": "$Date", "format": "%d/%m/%Y" } } } }, 
             {"$sort": { "Date": -1 } }, 
-            {"$limit": 10}
+            {"$limit": 10},
+            { "$project": { "_id": 0, "Country": 1, "League": 1, "Season": 1, "Date": { "$dateToString": { "date": "$Date", "format": "%d/%m/%Y" } }, "HomeTeam": 1, "AwayTeam": 1, "HomeTeamGoals": 1, "AwayTeamGoals": 1, "Result": 1}}
         ]
         return dumps(mongo.db.matches.aggregate(pipeline))
     elif League is None:
@@ -18,7 +19,7 @@ def matches(League=None, Season=None):
     elif Season is None:
         return dumps(mongo.db.matches.find({"League": League}))
     else:
-        return dumps(mongo.db.matches.find({"Season": Season, "League": League}))
+        return dumps(mongo.db.matches.find({"League": League, "Season": Season}))
 
 def teamatches(Team, Season=None):
     if Season is None:
@@ -26,7 +27,8 @@ def teamatches(Team, Season=None):
             {"$match": {"HomeTeam": Team}},
             {"$unionWith": {"coll": "matches", "pipeline": [{"$match": {"AwayTeam": Team}}]}},
             {"$addFields": { "Date": { "$dateFromString": { "dateString": "$Date", "format": "%d/%m/%Y"}}}},
-            {"$sort": {"Date": -1}}
+            {"$sort": {"Date": -1}},
+            { "$project": { "_id": 0, "Country": 1, "League": 1, "Season": 1, "Date": { "$dateToString": { "date": "$Date", "format": "%d/%m/%Y" } }, "HomeTeam": 1, "AwayTeam": 1, "HomeTeamGoals": 1, "AwayTeamGoals": 1, "Result": 1}}
         ]
         return dumps(mongo.db.matches.aggregate(pipeline))
     else:
@@ -58,7 +60,7 @@ def season_redCards(Season):
         {"$match": {"Season": Season} },
         {"$group": {"_id": {"League": "$League", "Season": "$Season"},"RedCards": { "$sum": { "$add": ["$HomeTeamRedCards", "$AwayTeamRedCards"] } }}},
         {"$project": {"_id": 0,"League": "$_id.League","Season": "$_id.Season","RedCards": "$RedCards"}},
-        {"$sort": {"RedCards": -1}}
+        {"$sort": {"League": 1}}
     ]
     return dumps(mongo.db.matches.aggregate(pipeline))
 
@@ -68,6 +70,6 @@ def season_accuracy(Season):
         {"$group": {"_id": "$League","totalShots": { "$sum": "$HomeTeamShots" }, "totalShotsTarget": { "$sum": "$HomeTeamShotsTarget" }}},
         {"$project": {"_id": 0, "League": "$_id", "Accuracy": { "$multiply": [ { "$divide": [ "$totalShotsTarget", "$totalShots" ] }, 100 ] }}},
         {"$project": {"League": 1, "Accuracy": { "$round": ["$Accuracy", 2] }}},
-        {"$sort": {"Accuracy": -1}}
+        {"$sort": {"League": 1}}
     ]
     return dumps(mongo.db.matches.aggregate(pipeline))
