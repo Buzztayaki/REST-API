@@ -10,6 +10,8 @@ services:
       ipv4_address: 192.168.10.10
     ports:
       - 5000:5000 # Quitar Cuando este funcionando a traves de Cloudflare Tunnel Puerto expuesto en la imagen
+    volumes:
+      - api-data:/var/api
     restart: unless-stopped
     container_name: pythonAPI
     hostname: pythonAPI
@@ -55,6 +57,7 @@ services:
 
 volumes:
   mongo-data:
+  api-data:
 
 networks:
   API-net:
