@@ -1,7 +1,6 @@
 from flask import Flask, jsonify, Response, request
 from .databasequerys import mongo, matches, teamatches, classification, season_redCards, season_accuracy
 from flask_restx import Api, Resource
-from src.databasequerys import matches
 from flask_cors import CORS
 
 

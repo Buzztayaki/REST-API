@@ -1,3 +1,3 @@
-FLASK_APP=.\src\app.py
+FLASK_APP=./src/app.py
 FLASK_DEBUG=False
 FLASK_RUN_HOST=192.168.10.10
