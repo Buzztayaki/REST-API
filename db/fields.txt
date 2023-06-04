@@ -1,4 +1,3 @@
-id.string()
 Country.string()
 League.string()
 LeagueID.string()

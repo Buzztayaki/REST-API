@@ -1,15 +1,15 @@
 #!/bin/bash
 
-data="/home/carlos/matchesdata2022-2023.csv"
-PyScript="/home/carlos/datascrambler.py"
-logFile="/home/carlos/mongoimports.log"
+data="/home/carlos/db/matchesdata2021-2023.csv"
+data2="/home/carlos/db/matchesdata.csv"
+PyScript="/home/carlos/db/datascraper.py"
+logFile="/home/carlos/db/mongoimports.log"
 date=$(date +"%Y/%m/%d %H:%M:%S")
-mongoimport= $(mongoimport --uri 'mongodb://carlos:carlos@localhost:27017/football?authSource=admin' --collection matches --drop --type csv --columnsHaveTypes --fieldFile=/home/db/fields.txt --file "$data")
 
 echo "[$date] Comienza el update de la base de datos" >> $logFile
 
-if [ -f $data ]; then
-        # mv $data "primer.csv"
+if [ -f $data ] || [ -f $data2 ]; then
+        rm $data $data2
         echo "Archivo $data antiguo eliminado" >> $logFile
 else
         echo "No se encontro archivo $data anterior" >> $logFile
@@ -21,17 +21,18 @@ if [ ! -f $PyScript ]; then
         exit 1
 else
         echo "Se empieza a ejecutar $PyScript" >> $logFile
-        python3 $PyScript > /dev/pts/5 2>&1
+        python3 $PyScript > /dev/null 2>&1
         sleep 5
 fi
 
 
-if [ ! -f "/root/matchesdata2022-2023.csv" ]; then
+if [ ! -f $data ]; then
         echo "No se ha generado el archivo $data terminando el programa" >> $logFile
 else
-        mv /root/matchesdata2022-2023 $data
         echo "Archivo $data generado y Headerline borrado"
         sed -i '1d' "$data" #Elimina el Headerline
-        $mongoimport 2> $logFile
-        echo "Base de datos actualizada"
+	cut -d ',' -f 2- matchesdata2021-2023.csv > matchesdata.csv
+        mongoimport --uri 'mongodb://carlos:carlos@localhost:27017/football?authSource=admin' --collection matches --drop --type csv --ignoreBlanks --columnsHaveTypes --fieldFile=fields.txt --file matchesdata.csv
+        rm $data $data2
+	echo "Base de datos actualizada"
 fi

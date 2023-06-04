@@ -15,11 +15,5 @@ shortuuid
 
 collections: matches, classification, calendar, predictions
 
-db.createUser(
-{
-user: "nombre:_del_usuario",
-pwd: "contraseña",
-roles: [ "read", "dbAdmin" ]
-}
-);
+db.createUser({user: "flaskadmin", pwd: "flaskadmin", roles: [ "read", "dbAdmin" ]});
 

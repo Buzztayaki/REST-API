@@ -7,7 +7,7 @@ services:
       image: PythonFlask_API
     networks:
       API-net:
-      ipv4_address: 192.168.10.10
+        ipv4_address: 192.168.10.10
     ports:
       - 5000:5000 # Quitar Cuando este funcionando a traves de Cloudflare Tunnel Puerto expuesto en la imagen
     volumes:
@@ -16,6 +16,8 @@ services:
     container_name: pythonAPI
     hostname: pythonAPI
     domainname: pythonAPI
+    stdin_open: true 
+    tty: true
   
   mongoServer:
     build:
@@ -33,6 +35,8 @@ services:
     container_name: mongoServer
     hostname: mongoServer
     domainname: mongoServer
+    stdin_open: true 
+    tty: true
 
   apacheServer:
     image: php:apache-bullseye
@@ -46,6 +50,8 @@ services:
     container_name: apacheServer
     hostname: apacheServer
     domainname: apacheServer
+    stdin_open: true 
+    tty: true
   
   cloudflaretunnel:
     image: cloudflare/cloudflare:latest
@@ -65,4 +71,4 @@ networks:
     ipam:
       driver: default
       config:
-        -subnet: "192.168.10.0/24"
+        - subnet: "192.168.10.0/24"
