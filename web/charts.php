@@ -52,25 +52,25 @@
     <script>
     // setup 
     async function redCards2223(){
-      const url = 'http://192.168.10.10:5000/leaguestats/redcards/2022-2023'
+      const url = 'https://api.cbusseq.com/leaguestats/redcards/2022-2023'
       const response = await fetch(url);
       const datapoints = await response.json();
       return datapoints
     };
     async function redCards2122(){
-      const url = 'http://192.168.10.10:5000/leaguestats/redcards/2021-2022'
+      const url = 'https://api.cbusseq.com/leaguestats/redcards/2021-2022'
       const response = await fetch(url);
       const datapoints = await response.json();
       return datapoints
     };
     async function accuracy2223(){
-      const url = 'http://192.168.10.10:5000/leaguestats/accuracy/2022-2023'
+      const url = 'https://api.cbusseq.com/leaguestats/accuracy/2022-2023'
       const response = await fetch(url);
       const datapoints = await response.json();
       return datapoints
     };
     async function accuracy2122(){
-      const url = 'http://192.168.10.10:5000/leaguestats/accuracy/2021-2022'
+      const url = 'https://api.cbusseq.com/leaguestats/accuracy/2021-2022'
       const response = await fetch(url);
       const datapoints = await response.json();
       return datapoints
