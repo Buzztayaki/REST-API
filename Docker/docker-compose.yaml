@@ -43,7 +43,11 @@ services:
     expose:
       - 80
       - 443
+    ports:
+      - 8000:80
     restart: unless-stopped
+    volumes:
+      - web-data:/var/www/web
     networks:
       API-net:
         ipv4_address: 192.168.10.30
@@ -52,18 +56,11 @@ services:
     domainname: apacheServer
     stdin_open: true 
     tty: true
-  
-  cloudflaretunnel:
-    image: cloudflare/cloudflare:latest
-    restart: unless-stopped
-    networks:
-      API-net:
-        ipv4_address: 192.168.10.40
-    command: tunnel run --token <MY_TOKEN>
 
 volumes:
   mongo-data:
   api-data:
+  web-data:
 
 networks:
   API-net:
